@@ -1,6 +1,7 @@
 .App {
   display: flex;
   gap: 20px;
+  margin: 50px;
 }
 
 .App-logo {
