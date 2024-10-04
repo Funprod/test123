@@ -1,7 +1,6 @@
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    ChangeTodolistFilterActionType,
     changeTodolistTitleAC,
     removeTodolistAC,
     todolistsReducer,
@@ -13,19 +12,10 @@ test('correct todolist should be removed', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    // 1. Стартовый state
     const startState: TodoListType[] = [
         { id: todolistId1, title: 'What to learn', filter: 'all' },
         { id: todolistId2, title: 'What to buy', filter: 'all' },
     ];
-
-    // const action = {
-    //     type: 'REMOVE-TODOLIST' as const,
-    //     payload: {
-    //         id: todolistId1,
-    //     },
-    // };
-    // const endState = todolistsReducer(startState, action);
 
     const endState = todolistsReducer(
         startState,
@@ -45,12 +35,6 @@ test('correct todolist should be added', () => {
         { id: todolistId2, title: 'What to buy', filter: 'all' },
     ];
 
-    // const action = {
-    //     type: 'ADD-TODOLIST' as const,
-    //     payload: {
-    //         title: 'New Todolist',
-    //     },
-    // };
     const endState = todolistsReducer(
         startState,
         addTodolistAC('New Todolist'),
@@ -70,14 +54,6 @@ test('correct todolist should change its name', () => {
         { id: todolistId2, title: 'What to buy', filter: 'all' },
     ];
 
-    // const action = {
-    //     type: 'CHANGE-TODOLIST-TITLE' as const,
-    //     payload: {
-    //         id: todolistId2,
-    //         title: 'New Todolist',
-    //     },
-    // };
-
     const endState = todolistsReducer(
         startState,
         changeTodolistTitleAC(todolistId2, 'New Todolist'),
@@ -95,14 +71,6 @@ test('correct filter of todolist should be changed', () => {
         { id: todolistId1, title: 'What to learn', filter: 'all' },
         { id: todolistId2, title: 'What to buy', filter: 'all' },
     ];
-
-    // const action: ChangeTodolistFilterActionType = {
-    //     type: 'CHANGE-TODOLIST-FILTER',
-    //     payload: {
-    //         id: todolistId2,
-    //         filter: 'completed',
-    //     },
-    // };
 
     const endState = todolistsReducer(
         startState,
