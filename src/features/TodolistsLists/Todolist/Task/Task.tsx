@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useCallback } from 'react';
-
 import { useDispatch } from 'react-redux';
-import { updateTaskAC, changeTaskTitleAC, removeTaskAC, removeTaskTC, updateTaskTC } from './state/tasks-reducer';
 import { Checkbox, IconButton } from '@mui/material';
-import { EditableSpan } from './EditableSpan';
 import { Delete } from '@mui/icons-material';
-import { TaskStatuses, TaskType, todolistsAPI } from './api/todolists-api';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
+
+import { TaskStatuses, TaskType } from '../../../../api/todolists-api';
+import { EditableSpan } from '../../../../components/EditableSpan/EditableSpan';
+import { removeTaskTC, updateTaskTC } from '../../tasks-reducer';
 
 export const Task = React.memo((props: TaskPropsType) => {
     const dispatch: ThunkDispatch<any, any, AnyAction> = useDispatch();

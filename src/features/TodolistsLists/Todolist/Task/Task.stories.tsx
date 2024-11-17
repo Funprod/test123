@@ -1,7 +1,9 @@
 import { action } from '@storybook/addon-actions';
+
+import { ReduxStoreProviderDecorator } from '../../../../stories/ReduxStoreProviderDecorator';
+import { TaskPriorities, TaskStatuses } from '../../../../api/todolists-api';
 import { Task } from './Task';
-import { ReduxStoreProviderDecorator } from './stories/ReduxStoreProviderDecorator';
-import { TaskPriorities, TaskStatuses } from './api/todolists-api';
+
 export default {
     title: 'Task Component',
     component: Task,

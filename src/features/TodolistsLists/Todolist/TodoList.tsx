@@ -1,16 +1,18 @@
 import React, { useCallback, useEffect } from 'react';
-import { AddItemForm } from './AddItemForm';
-import { EditableSpan } from './EditableSpan';
 import { Button, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './state/store';
-import { addTaskAC, addTaskTC, fetchTasksTC } from './state/tasks-reducer';
-import { Task } from './Task';
-import { TaskStatuses, TaskType } from './api/todolists-api';
-import { FilterValuesType } from './state/todolists-reducer';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
+import { FilterValuesType } from '../todolists-reducer';
+
+import { TaskStatuses, TaskType } from '../../../api/todolists-api';
+
+import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
+import { EditableSpan } from '../../../components/EditableSpan/EditableSpan';
+import { Task } from './Task/Task';
+import { RootState } from '../../../app/store';
+import { addTaskTC, fetchTasksTC } from '../tasks-reducer';
 
 type PropsType = {
     id: string;
