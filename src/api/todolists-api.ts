@@ -1,13 +1,10 @@
 import axios from 'axios';
 
-const token = 'e81fb143-bf82-42c7-98e8-b99ec432e308';
-const apiKey = '9fc5eb4c-a7cb-4f8b-ac15-1dc2b2f8171f';
-
 const settings = {
     withCredentials: true,
     headers: {
-        Authorization: `Bearer ${token}`,
-        'API-KEY': apiKey,
+        Authorization: `Bearer e81fb143-bf82-42c7-98e8-b99ec432e308`,
+        'API-KEY': '9fc5eb4c-a7cb-4f8b-ac15-1dc2b2f8171f',
     },
 };
 

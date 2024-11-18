@@ -7,16 +7,18 @@ import { combineReducers, legacy_createStore } from 'redux';
 
 import { TaskPriorities, TaskStatuses } from '../api/todolists-api';
 import { tasksReducer } from '../features/TodolistsLists/tasks-reducer';
+import { appReducer } from '../app/app-reducer';
 
 const rootReducer = combineReducers({
     todolists: todolistsReducer,
     tasks: tasksReducer,
+    app: appReducer,
 });
 
 const initialGlobalState: any = {
     todolists: [
-        { id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0 },
-        { id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0 },
+        { id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle' },
+        { id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle' },
     ],
     tasks: {
         ['todolistId1']: [
@@ -72,9 +74,13 @@ const initialGlobalState: any = {
             },
         ],
     },
+    app: {
+        error: null,
+        status: 'idle',
+    },
 };
 
-export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState);
+export const storyBookStore = legacy_createStore(rootReducer, {}, initialGlobalState);
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>;

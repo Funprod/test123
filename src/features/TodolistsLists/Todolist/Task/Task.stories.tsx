@@ -1,5 +1,3 @@
-import { action } from '@storybook/addon-actions';
-
 import { ReduxStoreProviderDecorator } from '../../../../stories/ReduxStoreProviderDecorator';
 import { TaskPriorities, TaskStatuses } from '../../../../api/todolists-api';
 import { Task } from './Task';
