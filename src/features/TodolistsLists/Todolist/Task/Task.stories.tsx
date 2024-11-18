@@ -14,6 +14,7 @@ export const TaskFromBaseExample = () => {
     return (
         <>
             <Task
+                entityStatus="idle"
                 task={{
                     id: '1',
                     status: TaskStatuses.Completed,
@@ -30,6 +31,7 @@ export const TaskFromBaseExample = () => {
                 key={'1'}
             />
             <Task
+                entityStatus="idle"
                 task={{
                     id: '2',
                     status: TaskStatuses.New,

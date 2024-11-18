@@ -17,15 +17,16 @@ import { AddItemForm } from '../../components/AddItemForm/AddItemForm';
 import { TodoList } from './Todolist/TodoList';
 import { RootState } from '../../app/store';
 
-type TodolistsListPropsType = {
-    todolists: TodolistDomainType[];
+type PropsType = {
+    demo?: boolean;
 };
 
-export const TodolistsList: React.FC = () => {
+export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     const todoLists = useSelector<RootState, TodolistDomainType[]>((state) => state.todolists);
     const dispatch: ThunkDispatch<any, any, AnyAction> = useDispatch();
 
     useEffect(() => {
+        if (demo) return;
         dispatch(fetchTodolistsTC());
     }, []);
 
@@ -67,10 +68,9 @@ export const TodolistsList: React.FC = () => {
                         <Grid key={tl.id} item>
                             <Paper style={{ padding: '20px' }}>
                                 <TodoList
-                                    id={tl.id}
-                                    title={tl.title}
+                                    todolist={tl}
+                                    demo={demo}
                                     changeFilter={changeFilter}
-                                    filter={tl.filter}
                                     removeTodoList={removeTodoList}
                                     changeTodoListTitle={changeTodoListTitle}
                                 />

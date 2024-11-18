@@ -11,5 +11,5 @@ export default {
 const cb = action('Value changed');
 
 export const AppWithReduxBaseExample = (props: any) => {
-    return <App />;
+    return <App demo={true} />;
 };

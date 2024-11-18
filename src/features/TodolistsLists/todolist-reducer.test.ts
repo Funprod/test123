@@ -1,5 +1,7 @@
+import { RequestStatusType } from '../../app/app-reducer';
 import {
     addTodolistAC,
+    changeTodolistEntityStatusAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     removeTodolistAC,
@@ -65,4 +67,11 @@ test('todolist should be set to the state', () => {
     const endState = todolistsReducer([], action);
 
     expect(endState.length).toBe(2);
+});
+test('correct entityStatus of todolist should be changed', () => {
+    let newStatus: RequestStatusType = 'loading';
+    const endState = todolistsReducer(startState, changeTodolistEntityStatusAC(todolistId2, newStatus));
+
+    expect(endState[0].entityStatus).toBe('idle');
+    expect(endState[1].entityStatus).toBe(newStatus);
 });
