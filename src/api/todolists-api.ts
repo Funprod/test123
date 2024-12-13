@@ -3,7 +3,6 @@ import axios from 'axios';
 const settings = {
     withCredentials: true,
     headers: {
-        Authorization: `Bearer e81fb143-bf82-42c7-98e8-b99ec432e308`,
         'API-KEY': '9fc5eb4c-a7cb-4f8b-ac15-1dc2b2f8171f',
     },
 };
@@ -11,6 +10,12 @@ const settings = {
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     ...settings,
+});
+
+instance.interceptors.request.use(function (config) {
+    config.headers['Authorization'] = `Bearer ${localStorage.getItem('sn-token')}`;
+
+    return config;
 });
 // Api
 export const todolistsAPI = {
@@ -40,6 +45,24 @@ export const todolistsAPI = {
     },
 };
 
+export type LoginParamsType = {
+    email: string;
+    password: string;
+    rememberMe: boolean;
+    captcha?: string;
+};
+export const authAPI = {
+    login(data: LoginParamsType) {
+        return instance.post<ResponseType<{ userId?: number; token: string }>>('auth/login', data);
+    },
+    logout() {
+        return instance.delete<ResponseType<{ userId?: number }>>('auth/login');
+    },
+    me() {
+        return instance.get<ResponseType<{ id: number; email: string; login: string }>>('auth/me');
+    },
+};
+
 // Types
 export type TodolistType = {
     id: string;
@@ -47,8 +70,11 @@ export type TodolistType = {
     addedDate: string;
     order: number;
 };
+
+export type FieldErrorType = { field: string; error: string };
 export type ResponseType<D = {}> = {
     resultCode: number;
+    fieldsErrors?: Array<FieldErrorType>;
     messages: string[];
     data: D;
 };

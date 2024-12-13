@@ -32,28 +32,28 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 
     const changeFilter = useCallback(
         (value: FilterValuesType, todoListId: string) => {
-            dispatch(changeTodolistFilterAC(todoListId, value));
+            dispatch(changeTodolistFilterAC({ id: todoListId, filter: value }));
         },
         [dispatch],
     );
 
     const removeTodoList = useCallback(
-        (todoListId: string) => {
-            dispatch(removeTodolistTC(todoListId));
+        (todolistId: string) => {
+            dispatch(removeTodolistTC({ todolistId }));
         },
         [dispatch],
     );
     const changeTodoListTitle = useCallback(
-        (todoListId: string, newTitle: string) => {
+        (todolistId: string, newTitle: string) => {
             // dispatch(changeTodolistTitleAC(todoListId, newTitle));
-            dispatch(changeTodolistTitleTC(todoListId, newTitle));
+            dispatch(changeTodolistTitleTC({ todolistId, title: newTitle }));
         },
         [dispatch],
     );
 
     const addTodolist = useCallback(
         (title: string) => {
-            dispatch(addTodolistTC(title));
+            dispatch(addTodolistTC({ title }));
         },
         [dispatch],
     );

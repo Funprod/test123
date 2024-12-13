@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Button, IconButton } from '@mui/material';
+import { Button, CircularProgress, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
@@ -13,6 +13,7 @@ import { EditableSpan } from '../../../components/EditableSpan/EditableSpan';
 import { Task } from './Task/Task';
 import { RootState } from '../../../app/store';
 import { addTaskTC, fetchTasksTC } from '../tasks-reducer';
+import { Navigate, Route } from 'react-router-dom';
 
 type PropsType = {
     todolist: TodolistDomainType;
@@ -36,7 +37,7 @@ export const TodoList = React.memo(({ demo = false, ...props }: PropsType) => {
 
     const addTask = useCallback(
         (title: string) => {
-            dispatch(addTaskTC(title, props.todolist.id));
+            dispatch(addTaskTC({ title, todolistId: props.todolist.id }));
         },
         [props.todolist.id],
     );
@@ -73,7 +74,6 @@ export const TodoList = React.memo(({ demo = false, ...props }: PropsType) => {
     if (props.todolist.filter === 'active') {
         tasksForTodoList = tasksForTodoList.filter((t) => t.status === TaskStatuses.New);
     }
-
     return (
         <div>
             <h3>

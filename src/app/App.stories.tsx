@@ -1,15 +1,13 @@
 import { action } from '@storybook/addon-actions';
-import { ReduxStoreProviderDecorator } from '../stories/ReduxStoreProviderDecorator';
+import { BrowserRouterDecorator, ReduxStoreProviderDecorator } from '../stories/ReduxStoreProviderDecorator';
 import App from './App';
 
 export default {
-    title: 'AppWithRedux Component',
+    title: 'App Stories',
     component: App,
-    decorators: [ReduxStoreProviderDecorator],
+    decorators: [ReduxStoreProviderDecorator, BrowserRouterDecorator],
 };
 
-const cb = action('Value changed');
-
-export const AppWithReduxBaseExample = (props: any) => {
+export const AppBaseExample = (props: any) => {
     return <App demo={true} />;
 };
