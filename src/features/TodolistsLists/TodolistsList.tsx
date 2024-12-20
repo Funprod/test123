@@ -1,21 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
-import {
-    addTodolistTC,
-    changeTodolistFilterAC,
-    changeTodolistTitleTC,
-    fetchTodolistsTC,
-    FilterValuesType,
-    removeTodolistTC,
-    TodolistDomainType,
-} from './todolists-reducer';
-import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
-
+import React, { useEffect } from 'react';
+import { TodolistDomainType } from './todolists-reducer';
+import { useSelector } from 'react-redux';
 import { Grid, Paper } from '@mui/material';
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm';
 import { TodoList } from './Todolist/TodoList';
-import { RootState } from '../../app/store';
+import { RootState, useActions } from '../../app/store';
+import { selectIsLoggedIn } from '../Auth/selectors';
+import { todolistsActions } from '.';
 
 type PropsType = {
     demo?: boolean;
@@ -23,40 +14,14 @@ type PropsType = {
 
 export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     const todoLists = useSelector<RootState, TodolistDomainType[]>((state) => state.todolists);
-    const dispatch: ThunkDispatch<any, any, AnyAction> = useDispatch();
+    const isLoggedIn = useSelector(selectIsLoggedIn);
+    const { addTodolist, fetchTodolists } = useActions(todolistsActions);
 
     useEffect(() => {
-        if (demo) return;
-        dispatch(fetchTodolistsTC());
+        if (demo || !isLoggedIn) return;
+        fetchTodolists();
     }, []);
 
-    const changeFilter = useCallback(
-        (value: FilterValuesType, todoListId: string) => {
-            dispatch(changeTodolistFilterAC({ id: todoListId, filter: value }));
-        },
-        [dispatch],
-    );
-
-    const removeTodoList = useCallback(
-        (todolistId: string) => {
-            dispatch(removeTodolistTC({ todolistId }));
-        },
-        [dispatch],
-    );
-    const changeTodoListTitle = useCallback(
-        (todolistId: string, newTitle: string) => {
-            // dispatch(changeTodolistTitleAC(todoListId, newTitle));
-            dispatch(changeTodolistTitleTC({ todolistId, title: newTitle }));
-        },
-        [dispatch],
-    );
-
-    const addTodolist = useCallback(
-        (title: string) => {
-            dispatch(addTodolistTC({ title }));
-        },
-        [dispatch],
-    );
     return (
         <>
             <Grid container style={{ padding: '20px' }}>
@@ -67,13 +32,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
                     return (
                         <Grid key={tl.id} item>
                             <Paper style={{ padding: '20px' }}>
-                                <TodoList
-                                    todolist={tl}
-                                    demo={demo}
-                                    changeFilter={changeFilter}
-                                    removeTodoList={removeTodoList}
-                                    changeTodoListTitle={changeTodoListTitle}
-                                />
+                                <TodoList todolist={tl} demo={demo} />
                             </Paper>
                         </Grid>
                     );

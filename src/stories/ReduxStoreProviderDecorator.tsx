@@ -7,7 +7,7 @@ import { TaskPriorities, TaskStatuses } from '../api/todolists-api';
 import { tasksReducer } from '../features/TodolistsLists/tasks-reducer';
 import { appReducer } from '../app/app-reducer';
 import { thunk } from 'redux-thunk';
-import { authReducer } from '../features/Login/auth-reducer';
+import { authReducer } from '../features/Auth/auth-reducer';
 import { RootReducerType, RootState } from '../app/store';
 import { configureStore } from '@reduxjs/toolkit';
 import { HashRouter } from 'react-router-dom';
@@ -81,7 +81,7 @@ const initialGlobalState: RootState = {
     app: {
         error: null,
         status: 'idle',
-        initialized: true,
+        isInitialized: true,
     },
     auth: {
         isLoggedIn: true,

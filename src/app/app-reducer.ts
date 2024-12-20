@@ -1,39 +1,29 @@
-import { Dispatch } from 'redux';
-import { authAPI } from '../api/todolists-api';
-import { setIsLoggedInAC } from '../features/Login/auth-reducer';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { initializedApp } from './app-actions';
 
-export const initializedAppTC = createAsyncThunk('app/initializedApp', async (param, { dispatch }) => {
-    const res = await authAPI.me();
-    if (res.data.resultCode === 0) {
-        dispatch(setIsLoggedInAC({ value: true }));
-    } else {
-    }
-});
-
-const slice = createSlice({
+export const slice = createSlice({
     name: 'app',
     initialState: {
         status: 'idle',
         error: null,
-        initialized: false,
+        isInitialized: false,
     } as InitialStateType,
     reducers: {
-        setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
+        setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
             state.status = action.payload.status;
         },
-        setAppErrorAC(state, action: PayloadAction<{ error: string | null }>) {
+        setAppError(state, action: PayloadAction<{ error: string | null }>) {
             state.error = action.payload.error;
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(initializedAppTC.fulfilled, (state) => {
-            state.initialized = true;
+        builder.addCase(initializedApp.fulfilled, (state) => {
+            state.isInitialized = true;
         });
     },
 });
 
-export const { setAppErrorAC, setAppStatusAC } = slice.actions;
+export const { setAppError, setAppStatus } = slice.actions;
 
 export const appReducer = slice.reducer;
 
@@ -42,8 +32,8 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 export type InitialStateType = {
     status: RequestStatusType;
     error: string | null;
-    initialized: boolean;
+    isInitialized: boolean;
 };
 
-export type SetErrorAppActionType = ReturnType<typeof slice.actions.setAppErrorAC>;
-export type SetStatusAppActionType = ReturnType<typeof slice.actions.setAppStatusAC>;
+export type SetErrorAppActionType = ReturnType<typeof slice.actions.setAppError>;
+export type SetStatusAppActionType = ReturnType<typeof slice.actions.setAppStatus>;

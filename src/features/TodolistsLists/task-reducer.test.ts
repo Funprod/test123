@@ -1,8 +1,17 @@
+import { tasksActions, todolistsActions } from '.';
 import { TaskPriorities, TaskStatuses } from '../../api/todolists-api';
 import { TaskStateType } from '../../app/App';
-import { addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, updateTaskTC } from './tasks-reducer';
-import { addTodolistTC, fetchTodolistsTC, removeTodolistTC } from './todolists-reducer';
+import { useActions } from '../../app/store';
+import { tasksReducer } from './tasks-reducer';
+
 let startState: TaskStateType = {};
+const {
+    removeTask: removeTaskTC,
+    updateTask: updateTaskTC,
+    addTask: addTaskTC,
+    fetchTasks: fetchTasksTC,
+} = useActions(tasksActions);
+const { addTodolist, fetchTodolists, removeTodolist } = useActions(todolistsActions);
 beforeEach(() => {
     startState = {
         todolistId1: [
@@ -217,7 +226,7 @@ test('title of specified task should be changed', () => {
 test('new array should be added when new todolist is added', () => {
     const endState = tasksReducer(
         startState,
-        addTodolistTC.fulfilled(
+        addTodolist.fulfilled(
             {
                 todolist: {
                     id: 'bla',
@@ -227,7 +236,7 @@ test('new array should be added when new todolist is added', () => {
                 },
             },
             '',
-            { title: 'new todolist' },
+            'new todolist',
         ),
     );
 
@@ -242,7 +251,7 @@ test('new array should be added when new todolist is added', () => {
 });
 
 test('property with todolistId should be deleted', () => {
-    const action = removeTodolistTC.fulfilled({ id: 'todolistId2' }, '', { todolistId: 'todolistId2' });
+    const action = removeTodolist.fulfilled({ id: 'todolistId2' }, '', { todolistId: 'todolistId2' });
 
     const endState = tasksReducer(startState, action);
 
@@ -255,7 +264,7 @@ test('property with todolistId should be deleted', () => {
 });
 
 test('empty arrays should be added when we set todolists', () => {
-    const action = fetchTodolistsTC.fulfilled(
+    const action = fetchTodolists.fulfilled(
         {
             todolists: [
                 { id: '1', title: 'title 1', addedDate: '', order: 0 },

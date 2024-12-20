@@ -4,15 +4,14 @@ import { Menu } from '@mui/icons-material';
 import { TaskType } from '../api/todolists-api';
 import { TodolistsList } from '../features/TodolistsLists/TodolistsList';
 import { ErrorSnackbar } from '../components/ErrorSnackbar/ErrorSnakbar';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './store';
-import { initializedAppTC, RequestStatusType } from './app-reducer';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Login } from '../features/Login/Login';
+import { useSelector } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { authActions, Login } from '../features/Auth';
 import { useCallback, useEffect } from 'react';
-import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
-import { logoutTC } from '../features/Login/auth-reducer';
+import { selectIsInitialized, selectStatus } from './selectors';
+import { authSelectors } from '../features/Auth';
+import { appActions } from '.';
+import { useActions } from './store';
 
 export type TaskStateType = {
     [key: string]: TaskType[];
@@ -23,19 +22,20 @@ type PropsType = {
 };
 
 function App({ demo = false }: PropsType) {
-    const status = useSelector<RootState, RequestStatusType>((state) => state.app.status);
-    const initialized = useSelector<RootState, boolean>((state) => state.app.initialized);
-    const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn);
-    const dispatch: ThunkDispatch<any, any, AnyAction> = useDispatch();
+    const status = useSelector(selectStatus); //useSelector<RootState, RequestStatusType>((state) => state.app.status);
+    const initialized = useSelector(selectIsInitialized);
+    const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn);
+    const { initializedApp } = useActions(appActions);
+    const { logout } = useActions(authActions);
 
     useEffect(() => {
-        if (!demo) {
-            dispatch(initializedAppTC());
+        if (!demo && !isLoggedIn) {
+            initializedApp();
         }
     }, []);
 
     const logOutHandler = useCallback(() => {
-        dispatch(logoutTC());
+        logout();
     }, []);
 
     if (!initialized) {
