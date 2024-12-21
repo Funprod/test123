@@ -5,7 +5,7 @@ import { ChangeTodolistEntityStatusAT } from './todolists-reducer';
 import { createSlice } from '@reduxjs/toolkit';
 const initialState: TaskStateType = {};
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {

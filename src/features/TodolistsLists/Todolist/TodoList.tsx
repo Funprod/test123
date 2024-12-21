@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
-import { Button, ButtonOwnProps, IconButton } from '@mui/material';
+import { Button, ButtonOwnProps, IconButton, Paper } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { FilterValuesType, TodolistDomainType } from '../todolists-reducer';
 import { TaskStatuses, TaskType } from '../../../api/todolists-api';
-import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
+import { AddItemForm, HelperType } from '../../../components/AddItemForm/AddItemForm';
 import { EditableSpan } from '../../../components/EditableSpan/EditableSpan';
 import { Task } from './Task/Task';
-import { RootState, useActions } from '../../../app/store';
+import { RootState, useActions, useAppDispatch } from '../../../app/store';
 import { tasksActions, todolistsActions } from '..';
 
 type PropsType = {
@@ -20,8 +20,9 @@ export const TodoList = React.memo(({ demo = false, ...props }: PropsType) => {
 
     const tasks = useSelector<RootState, TaskType[]>((state) => state.tasks[props.todolist.id]);
 
-    const { addTask, fetchTasks } = useActions(tasksActions);
+    const { fetchTasks } = useActions(tasksActions);
     const { changeTodolistFilter, removeTodolist, changeTodolistTitle } = useActions(todolistsActions);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (demo) return;
@@ -29,8 +30,19 @@ export const TodoList = React.memo(({ demo = false, ...props }: PropsType) => {
     }, []);
 
     const addTaskCallback = useCallback(
-        (title: string) => {
-            addTask({ title, todolistId: props.todolist.id });
+        async (title: string, helper: HelperType) => {
+            let thunk = tasksActions.addTask({ title, todolistId: props.todolist.id });
+            const resultAction = await dispatch(thunk);
+            if (tasksActions.addTask.rejected.match(resultAction)) {
+                if (resultAction.payload?.errors?.length) {
+                    const errorMessage: any = resultAction.payload?.errors[0];
+                    helper.setError(errorMessage);
+                } else {
+                    helper.setError('some error occurred');
+                }
+            } else {
+                helper.setTitle('');
+            }
         },
         [props.todolist.id],
     );
@@ -73,17 +85,22 @@ export const TodoList = React.memo(({ demo = false, ...props }: PropsType) => {
     };
 
     return (
-        <div>
+        <Paper style={{ padding: '10px', position: 'relative' }}>
             <h3>
                 <EditableSpan
                     title={props.todolist.title}
                     onChange={changeTodoListTitle}
                     disabled={props.todolist.entityStatus === 'loading'}
                 />
-                <IconButton onClick={removeTodoList} disabled={props.todolist.entityStatus === 'loading'}>
-                    <Delete />
-                </IconButton>
             </h3>
+            <IconButton
+                size={'small'}
+                onClick={removeTodoList}
+                disabled={props.todolist.entityStatus === 'loading'}
+                style={{ position: 'absolute', right: '5px', top: '5px' }}
+            >
+                <Delete fontSize={'small'} />
+            </IconButton>
             <AddItemForm addItem={addTaskCallback} disabled={props.todolist.entityStatus === 'loading'} />
             <ul>
                 {tasksForTodoList.map((t) => (
@@ -94,12 +111,13 @@ export const TodoList = React.memo(({ demo = false, ...props }: PropsType) => {
                         entityStatus={props.todolist.entityStatus}
                     />
                 ))}
+                {!tasksForTodoList.length && <span style={{ color: 'gray' }}>No task</span>}
             </ul>
             <div>
                 {renderFilterButton('all', 'All')}
                 {renderFilterButton('active', 'Active', 'primary')}
                 {renderFilterButton('completed', 'Completed', 'secondary')}
             </div>
-        </div>
+        </Paper>
     );
 });

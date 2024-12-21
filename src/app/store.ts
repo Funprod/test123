@@ -1,13 +1,13 @@
-import { action } from '@storybook/addon-actions';
 import { ActionCreatorsMapObject, bindActionCreators, combineReducers } from 'redux';
 import { thunk } from 'redux-thunk';
-import { tasksReducer } from '../features/TodolistsLists/tasks-reducer';
-import { todolistsReducer } from '../features/TodolistsLists/todolists-reducer';
-import { appReducer } from './app-reducer';
-import { authReducer } from '../features/Auth/auth-reducer';
+import { tasksReducer } from '../features/TodolistsLists';
+import { todolistsReducer } from '../features/TodolistsLists';
+import { appReducer } from '.';
+import { authReducer } from '../features/Auth';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { useMemo } from 'react';
+import { FieldErrorType } from '../api/todolists-api';
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -47,3 +47,5 @@ export function useActions<T extends ActionCreatorsMapObject<any>>(actions: T) {
     }, []);
     return boundActions;
 }
+
+export type ThunkError = { rejectValue: { errors: Array<unknown>; fieldsErrors?: FieldErrorType[] } };

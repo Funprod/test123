@@ -35,10 +35,10 @@ export const Login = () => {
             rememberMe: false,
         },
         onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
-            const action = await login(values);
-            if (login.rejected.match(action)) {
-                if (action.payload?.fieldsErrors?.length) {
-                    const error = action.payload?.fieldsErrors[0];
+            const resultAction = await login(values);
+            if (login.rejected.match(resultAction)) {
+                if (resultAction.payload?.fieldsErrors?.length) {
+                    const error = resultAction.payload?.fieldsErrors[0];
                     formikHelpers.setFieldError(error.field, error.error);
                 }
             }

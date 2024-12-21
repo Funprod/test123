@@ -4,14 +4,9 @@ import { handleServerAppError, handleServerNetworkError } from '../../utils/erro
 import { clearTasks } from '../TodolistsLists/tasks-reducer';
 import { clearTodolists } from '../TodolistsLists/todolists-reducer';
 import { setAppStatus } from '../../app/app-reducer';
+import { ThunkError } from '../../app/store';
 
-export const login = createAsyncThunk<
-    undefined,
-    LoginParamsType,
-    {
-        rejectValue: { errors: Array<unknown>; fieldsErrors?: FieldErrorType[] };
-    }
->('auth/login', async (param, thunkAPI) => {
+export const login = createAsyncThunk<undefined, LoginParamsType, ThunkError>('auth/login', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({ status: 'loading' }));
     try {
         const res = await authAPI.login(param);

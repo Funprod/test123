@@ -1,10 +1,15 @@
 import * as tasksActions from './tasks-actions';
 import * as todolistsAsyncActions from './todolists-actions';
-import { slice } from './todolists-reducer';
+import { slice as todolistsSlice } from './todolists-reducer';
 import * as TodolistsList from './TodolistsList';
+import { slice as tasksSLice } from './tasks-reducer';
 
 const todolistsActions = {
     ...todolistsAsyncActions,
-    ...slice.actions,
+    ...todolistsSlice.actions,
 };
-export { tasksActions, todolistsActions, TodolistsList };
+
+const todolistsReducer = todolistsSlice.reducer;
+const tasksReducer = tasksSLice.reducer;
+
+export { tasksActions, todolistsActions, TodolistsList, todolistsReducer, tasksReducer };

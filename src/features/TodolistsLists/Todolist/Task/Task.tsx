@@ -32,7 +32,11 @@ export const Task = React.memo((props: TaskPropsType) => {
     );
 
     return (
-        <li key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}>
+        <li
+            key={props.task.id}
+            className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}
+            style={{ position: 'relative' }}
+        >
             <Checkbox
                 checked={props.task.status === TaskStatuses.Completed}
                 onChange={changeTaskStatus}
@@ -43,8 +47,12 @@ export const Task = React.memo((props: TaskPropsType) => {
                 onChange={changeTaskTitle}
                 disabled={props.entityStatus === 'loading'}
             />
-            <IconButton onClick={removeTaskCallback} disabled={props.entityStatus === 'loading'}>
-                <Delete />
+            <IconButton
+                onClick={removeTaskCallback}
+                disabled={props.entityStatus === 'loading'}
+                style={{ position: 'absolute', top: '2px', right: '2px' }}
+            >
+                <Delete fontSize={'small'} />
             </IconButton>
         </li>
     );

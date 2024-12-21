@@ -1,13 +1,13 @@
 // store.ts
 import { Provider } from 'react-redux';
-import { todolistsReducer } from '../features/TodolistsLists/todolists-reducer';
+import { todolistsReducer } from '../features/TodolistsLists';
 import { v1 } from 'uuid';
-import { applyMiddleware, combineReducers, legacy_createStore } from 'redux';
+import { combineReducers } from 'redux';
 import { TaskPriorities, TaskStatuses } from '../api/todolists-api';
-import { tasksReducer } from '../features/TodolistsLists/tasks-reducer';
-import { appReducer } from '../app/app-reducer';
+import { tasksReducer } from '../features/TodolistsLists';
+import { appReducer } from '../app';
 import { thunk } from 'redux-thunk';
-import { authReducer } from '../features/Auth/auth-reducer';
+import { authReducer } from '../features/Auth';
 import { RootReducerType, RootState } from '../app/store';
 import { configureStore } from '@reduxjs/toolkit';
 import { HashRouter } from 'react-router-dom';
@@ -21,7 +21,14 @@ const rootReducer: RootReducerType = combineReducers({
 
 const initialGlobalState: RootState = {
     todolists: [
-        { id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle' },
+        {
+            id: 'todolistId1',
+            title: 'What to learn What to learn What to learn What to learn  What to learn What to learn',
+            filter: 'all',
+            addedDate: '',
+            order: 0,
+            entityStatus: 'idle',
+        },
         { id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: 'loading' },
     ],
     tasks: {

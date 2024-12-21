@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setAppStatus } from '../../app/app-reducer';
-import { todolistsAPI, UpdateTaskType } from '../../api/todolists-api';
+import { FieldErrorType, TaskType, todolistsAPI, UpdateTaskType } from '../../api/todolists-api';
 import { changeTodolistEntityStatus } from './todolists-reducer';
-import { handleServerAppError, handleServerNetworkError } from '../../utils/error-utils';
+import { handleAsyncServerNetworkError, handleServerAppError, handleServerNetworkError } from '../../utils/error-utils';
 import { UpdateDomainTaskModelType } from './tasks-reducer';
-import { RootState } from '../../app/store';
+import { RootState, ThunkError } from '../../app/store';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({ status: 'loading' }));
@@ -25,22 +25,22 @@ export const removeTask = createAsyncThunk(
     },
 );
 
-export const addTask = createAsyncThunk(
+export const addTask = createAsyncThunk<TaskType, { title: string; todolistId: string }, ThunkError>(
     'tasks/addTask',
-    async (param: { title: string; todolistId: string }, { dispatch, rejectWithValue }) => {
-        dispatch(setAppStatus({ status: 'loading' }));
+    async (param, thunkAPI) => {
+        thunkAPI.dispatch(setAppStatus({ status: 'loading' }));
         try {
             const res = await todolistsAPI.createTask(param.todolistId, param.title);
             if (res.data.resultCode === 0) {
-                dispatch(setAppStatus({ status: 'succeeded' }));
+                thunkAPI.dispatch(setAppStatus({ status: 'succeeded' }));
                 return res.data.data.item;
             } else {
-                handleServerAppError(res.data, dispatch);
-                return rejectWithValue(null);
+                handleServerAppError(res.data, thunkAPI.dispatch, false);
+                return thunkAPI.rejectWithValue({ errors: res.data.messages, fieldsErrors: res.data.fieldsErrors });
             }
         } catch (error) {
-            handleServerNetworkError(error, dispatch);
-            return rejectWithValue(null);
+            return handleAsyncServerNetworkError(error, thunkAPI);
+            // return rejectWithValue({ errors: [error.messages], fieldsErrors: undefined });
         }
     },
 );
