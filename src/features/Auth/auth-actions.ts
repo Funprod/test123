@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { authAPI, FieldErrorType, LoginParamsType } from '../../api/todolists-api';
-import { handleServerAppError, handleServerNetworkError } from '../../utils/error-utils';
+import { authAPI, LoginParamsType } from '../../api/todolists-api';
 import { clearTasks } from '../TodolistsLists/tasks-reducer';
 import { clearTodolists } from '../TodolistsLists/todolists-reducer';
-import { setAppStatus } from '../../app/app-reducer';
+import { setAppStatus } from '../../features/App/app-reducer';
 import { ThunkError } from '../../app/store';
+import { handleAsyncServerAppError, handleAsyncServerNetworkError } from '../../utils/error-utils';
 
 export const login = createAsyncThunk<undefined, LoginParamsType, ThunkError>('auth/login', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({ status: 'loading' }));
@@ -15,12 +15,12 @@ export const login = createAsyncThunk<undefined, LoginParamsType, ThunkError>('a
             localStorage.setItem('sn-token', res.data.data.token);
             return;
         } else {
-            handleServerAppError(res.data, thunkAPI.dispatch);
-            return thunkAPI.rejectWithValue({ errors: res.data.messages, fieldsErrors: res.data.fieldsErrors });
+            return handleAsyncServerAppError(res.data, thunkAPI);
+            // return thunkAPI.rejectWithValue({ errors: res.data.messages, fieldsErrors: res.data.fieldsErrors });
         }
     } catch (error) {
-        handleServerNetworkError(error, thunkAPI.dispatch);
-        return thunkAPI.rejectWithValue({ errors: [error], fieldsErrors: undefined });
+        return handleAsyncServerNetworkError(error, thunkAPI);
+        // return thunkAPI.rejectWithValue({ errors: [error], fieldsErrors: undefined });
     }
 });
 
@@ -35,11 +35,11 @@ export const logout = createAsyncThunk('auth/logout', async (param, thunkAPI) =>
             localStorage.removeItem('sn-token');
             return;
         } else {
-            handleServerAppError(res.data, thunkAPI.dispatch);
-            return thunkAPI.rejectWithValue({});
+            return handleAsyncServerAppError(res.data, thunkAPI);
+            // return thunkAPI.rejectWithValue({});
         }
     } catch (error) {
-        handleServerNetworkError(error, thunkAPI.dispatch);
-        return thunkAPI.rejectWithValue({});
+        return handleAsyncServerNetworkError(error, thunkAPI);
+        // return thunkAPI.rejectWithValue({});
     }
 });

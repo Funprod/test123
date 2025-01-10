@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initializedApp } from './app-actions';
+import { initializedApp } from '../../app/app-actions';
 
 export const slice = createSlice({
     name: 'app',
@@ -33,5 +33,5 @@ export type InitialStateType = {
     isInitialized: boolean;
 };
 
-export type SetErrorAppActionType = ReturnType<typeof slice.actions.setAppError>;
-export type SetStatusAppActionType = ReturnType<typeof slice.actions.setAppStatus>;
+// export type SetErrorAppActionType = ReturnType<typeof slice.actions.setAppError>;
+// export type SetStatusAppActionType = ReturnType<typeof slice.actions.setAppStatus>;

@@ -10,8 +10,9 @@ import { authActions, Login } from '../features/Auth';
 import { useCallback, useEffect } from 'react';
 import { selectIsInitialized, selectStatus } from './selectors';
 import { authSelectors } from '../features/Auth';
-import { appActions } from '.';
-import { useActions } from './store';
+
+import { useActions } from '../utils/redux-utils';
+import { appAsyncActions } from '../features/App';
 
 export type TaskStateType = {
     [key: string]: TaskType[];
@@ -25,7 +26,7 @@ function App({ demo = false }: PropsType) {
     const status = useSelector(selectStatus); //useSelector<RootState, RequestStatusType>((state) => state.app.status);
     const initialized = useSelector(selectIsInitialized);
     const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn);
-    const { initializedApp } = useActions(appActions);
+    const { initializedApp } = useActions(appAsyncActions);
     const { logout } = useActions(authActions);
 
     useEffect(() => {

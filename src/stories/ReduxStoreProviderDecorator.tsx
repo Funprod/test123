@@ -5,7 +5,7 @@ import { v1 } from 'uuid';
 import { combineReducers } from 'redux';
 import { TaskPriorities, TaskStatuses } from '../api/todolists-api';
 import { tasksReducer } from '../features/TodolistsLists';
-import { appReducer } from '../app';
+import { appReducer } from '../features/App';
 import { thunk } from 'redux-thunk';
 import { authReducer } from '../features/Auth';
 import { RootReducerType, RootState } from '../app/store';

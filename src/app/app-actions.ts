@@ -1,7 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { authAPI } from '../api/todolists-api';
-import { useActions } from './store';
-import { authActions } from '../features/Auth';
 import { setIsLoggedIn } from '../features/Auth/auth-reducer';
 
 export const initializedApp = createAsyncThunk('app/initializedApp', async (param, { dispatch }) => {

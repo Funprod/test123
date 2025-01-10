@@ -1,10 +1,10 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@mui/material';
 import { FormikHelpers, useFormik } from 'formik';
 import { useSelector } from 'react-redux';
-import { useActions } from '../../app/store';
 import { Navigate } from 'react-router-dom';
 import { selectIsLoggedIn } from './selectors';
 import { authActions } from '.';
+import { useActions } from '../../utils/redux-utils';
 
 type FormValuesType = {
     email: string;

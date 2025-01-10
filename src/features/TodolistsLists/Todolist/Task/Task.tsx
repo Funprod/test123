@@ -3,9 +3,10 @@ import { Checkbox, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { TaskStatuses, TaskType } from '../../../../api/todolists-api';
 import { EditableSpan } from '../../../../components/EditableSpan/EditableSpan';
-import { RequestStatusType } from '../../../../app/app-reducer';
-import { useActions } from '../../../../app/store';
+import { RequestStatusType } from '../../../../features/App/app-reducer';
+
 import { tasksActions } from '../..';
+import { useActions } from '../../../../utils/redux-utils';
 
 export const Task = React.memo((props: TaskPropsType) => {
     const { removeTask, updateTask } = useActions(tasksActions);

@@ -2,7 +2,7 @@ import { ActionCreatorsMapObject, bindActionCreators, combineReducers } from 're
 import { thunk } from 'redux-thunk';
 import { tasksReducer } from '../features/TodolistsLists';
 import { todolistsReducer } from '../features/TodolistsLists';
-import { appReducer } from '.';
+import { appReducer } from '../features/App';
 import { authReducer } from '../features/Auth';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
@@ -34,18 +34,5 @@ export type RootState = ReturnType<RootReducerType>;
 window.store = store;
 
 export default store;
-
-type AppDispatchType = typeof store.dispatch;
-
-export const useAppDispatch = () => useDispatch<AppDispatchType>();
-
-export function useActions<T extends ActionCreatorsMapObject<any>>(actions: T) {
-    const dispatch = useAppDispatch();
-
-    const boundActions = useMemo(() => {
-        return bindActionCreators(actions, dispatch);
-    }, []);
-    return boundActions;
-}
 
 export type ThunkError = { rejectValue: { errors: Array<unknown>; fieldsErrors?: FieldErrorType[] } };

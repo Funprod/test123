@@ -7,8 +7,9 @@ import { TaskStatuses, TaskType } from '../../../api/todolists-api';
 import { AddItemForm, HelperType } from '../../../components/AddItemForm/AddItemForm';
 import { EditableSpan } from '../../../components/EditableSpan/EditableSpan';
 import { Task } from './Task/Task';
-import { RootState, useActions, useAppDispatch } from '../../../app/store';
+import { RootState } from '../../../app/store';
 import { tasksActions, todolistsActions } from '..';
+import { useActions, useAppDispatch } from '../../../utils/redux-utils';
 
 type PropsType = {
     todolist: TodolistDomainType;
@@ -44,23 +45,23 @@ export const TodoList = React.memo(({ demo = false, ...props }: PropsType) => {
                 helper.setTitle('');
             }
         },
-        [props.todolist.id],
+        [dispatch, props.todolist.id],
     );
 
     const onFilterButtonClickHandler = useCallback(
         (filter: FilterValuesType) => changeTodolistFilter({ filter, id: props.todolist.id }),
-        [props.todolist.id],
+        [changeTodolistFilter, props.todolist.id],
     );
 
     const removeTodoList = useCallback(() => {
         removeTodolist({ todolistId: props.todolist.id });
-    }, [props.todolist.id]);
+    }, [props.todolist.id, removeTodolist]);
 
     const changeTodoListTitle = useCallback(
         (newTitle: string) => {
             changeTodolistTitle({ todolistId: props.todolist.id, title: newTitle });
         },
-        [props.todolist.id],
+        [changeTodolistTitle, props.todolist.id],
     );
 
     let tasksForTodoList = tasks;

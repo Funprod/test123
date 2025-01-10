@@ -1,30 +1,5 @@
-import { action } from '@storybook/addon-actions';
-import { Dispatch } from 'redux';
 import { ResponseType } from '../api/todolists-api';
-import { setAppError, setAppStatus, SetErrorAppActionType, SetStatusAppActionType } from '../app/app-reducer';
-import { AxiosError } from 'axios';
-
-export const handleServerAppError = <D>(
-    data: ResponseType<D>,
-    dispatch: Dispatch<SetErrorAppActionType | SetStatusAppActionType>,
-    showError = true,
-) => {
-    if (showError) {
-        dispatch(setAppError({ error: data.messages.length ? data.messages[0] : 'Some error occurred' }));
-    }
-    dispatch(setAppStatus({ status: 'failed' }));
-};
-
-export const handleServerNetworkError = (
-    error: any,
-    dispatch: Dispatch<SetErrorAppActionType | SetStatusAppActionType>,
-    showError = true,
-) => {
-    if (showError) {
-        dispatch(setAppError({ error: error.message ? error.message : 'some error occurred' }));
-    }
-    dispatch(setAppStatus({ status: 'failed' }));
-};
+import { setAppError, setAppStatus } from '../features/App/app-reducer';
 
 type ThunkAPIType = {
     dispatch: (action: any) => any;

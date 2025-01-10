@@ -1,7 +1,6 @@
 import { tasksActions, todolistsActions } from '.';
 import { TaskPriorities, TaskStatuses } from '../../api/todolists-api';
 import { TaskStateType } from '../../app/App';
-import { useActions } from '../../app/store';
 import { tasksReducer } from './tasks-reducer';
 
 let startState: TaskStateType = {};
@@ -10,8 +9,8 @@ const {
     updateTask: updateTaskTC,
     addTask: addTaskTC,
     fetchTasks: fetchTasksTC,
-} = useActions(tasksActions);
-const { addTodolist, fetchTodolists, removeTodolist } = useActions(todolistsActions);
+} = tasksActions;
+const { addTodolist, fetchTodolists, removeTodolist } = todolistsActions;
 beforeEach(() => {
     startState = {
         todolistId1: [
@@ -96,7 +95,10 @@ beforeEach(() => {
 test('correct task should be deleted from correct array', () => {
     const endState = tasksReducer(
         startState,
-        removeTaskTC.fulfilled({ id: '2', todolistId: 'todolistId2' }, '', { taskId: '2', todolistId: 'todolistId2' }),
+        removeTaskTC.fulfilled({ taskId: '2', todolistId: 'todolistId2' }, '', {
+            taskId: '2',
+            todolistId: 'todolistId2',
+        }),
     );
     expect(endState).toEqual({
         todolistId1: [
@@ -272,6 +274,7 @@ test('empty arrays should be added when we set todolists', () => {
             ],
         },
         '',
+        undefined,
     );
 
     const endState = tasksReducer({}, action);

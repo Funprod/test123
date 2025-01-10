@@ -1,6 +1,6 @@
 import { todolistsActions } from '.';
-import { RequestStatusType } from '../../app/app-reducer';
-import { useActions } from '../../app/store';
+import { RequestStatusType } from '../../features/App/app-reducer';
+
 import {
     changeTodolistEntityStatus,
     changeTodolistFilter,
@@ -13,7 +13,7 @@ let todolistId1 = '';
 let todolistId2 = '';
 let startState: TodolistDomainType[] = [];
 
-const { addTodolist, fetchTodolists, removeTodolist, changeTodolistTitle } = useActions(todolistsActions);
+const { addTodolist, fetchTodolists, removeTodolist, changeTodolistTitle } = todolistsActions;
 
 beforeEach(() => {
     todolistId1 = v1();
@@ -77,7 +77,7 @@ test('correct filter of todolist should be changed', () => {
     expect(endState[1].filter).toBe('completed');
 });
 test('todolist should be set to the state', () => {
-    const action = fetchTodolists.fulfilled({ todolists: startState }, '');
+    const action = fetchTodolists.fulfilled({ todolists: startState }, '', undefined);
 
     const endState = todolistsReducer([], action);
 

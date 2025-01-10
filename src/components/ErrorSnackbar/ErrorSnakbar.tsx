@@ -1,20 +1,22 @@
 import * as React from 'react';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { setAppError } from '../../app/app-reducer';
+// import { setAppError } from '../../features/App/app-reducer';
+import { appActions } from '../../features/App';
+import { useActions } from '../../utils/redux-utils';
 
 export function ErrorSnackbar() {
     //const [open, setOpen] = React.useState(true);
     const error = useSelector<RootState, string | null>((state) => state.app.error);
-    const dispatch = useDispatch();
+    const { setAppError } = useActions(appActions);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
         if (reason === 'clickaway') {
             return;
         }
-        dispatch(setAppError({ error: null }));
+        setAppError({ error: null });
         //setOpen(false);
     };
 

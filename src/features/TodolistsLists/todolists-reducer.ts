@@ -1,6 +1,5 @@
 import { TodolistType } from '../../api/todolists-api';
-import { Dispatch } from 'redux';
-import { RequestStatusType, SetErrorAppActionType, SetStatusAppActionType } from '../../app/app-reducer';
+import { RequestStatusType } from '../../features/App/app-reducer';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addTodolist, changeTodolistTitle, fetchTodolists, removeTodolist } from './todolists-actions';
 
@@ -21,22 +20,27 @@ export const slice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchTodolists.fulfilled, (state, action) => {
-            return action.payload.todolists.map((tl) => ({ ...tl, filter: 'all', entityStatus: 'idle' }));
-        });
-        builder.addCase(removeTodolist.fulfilled, (state, action) => {
-            const index = state.findIndex((tl) => tl.id === action.payload.id);
-            if (index > -1) {
-                state.splice(index, 1);
-            }
-        });
-        builder.addCase(addTodolist.fulfilled, (state, action) => {
-            state.unshift({ ...action.payload.todolist, filter: 'all', entityStatus: 'idle' });
-        });
-        builder.addCase(changeTodolistTitle.fulfilled, (state, action) => {
-            const index = state.findIndex((tl) => tl.id === action.payload.id);
-            state[index].title = action.payload.title;
-        });
+        builder
+            .addCase(fetchTodolists.fulfilled, (state, action) => {
+                return action.payload.todolists.map((tl) => ({
+                    ...tl,
+                    filter: 'all',
+                    entityStatus: 'idle',
+                }));
+            })
+            .addCase(removeTodolist.fulfilled, (state, action) => {
+                const index = state.findIndex((tl) => tl.id === action.payload.id);
+                if (index > -1) {
+                    state.splice(index, 1);
+                }
+            })
+            .addCase(addTodolist.fulfilled, (state, action) => {
+                state.unshift({ ...action.payload.todolist, filter: 'all', entityStatus: 'idle' });
+            })
+            .addCase(changeTodolistTitle.fulfilled, (state, action) => {
+                const index = state.findIndex((tl) => tl.id === action.payload.id);
+                state[index].title = action.payload.title;
+            });
     },
 });
 
@@ -58,5 +62,3 @@ export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType;
     entityStatus: RequestStatusType;
 };
-
-type ThunkDispatch = Dispatch<ActionsType | SetStatusAppActionType | SetErrorAppActionType>;
