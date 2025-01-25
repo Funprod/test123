@@ -56,7 +56,7 @@ export const Login = () => {
                     <FormControl>
                         <FormLabel>
                             <p>
-                                To login get registered
+                                To login
                                 <a
                                     style={{ marginLeft: '5px' }}
                                     href={'https://social-network.samuraijs.com/'}
